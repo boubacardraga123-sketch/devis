@@ -328,12 +328,13 @@
     #print-wrapper { display: block !important; }
     #devis-preview { display: block !important; }
     .print-page {
-      width: 210mm;
-      min-height: 297mm;
+      width: 100%;
       margin: 0;
       padding: 0;
     }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
+  @page { size: A4 portrait; margin: 15mm 12mm; }
 
   /* ─── PREVIEW MODAL ─── */
   .modal-overlay {
@@ -1221,7 +1222,7 @@ function printDevis() {
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
       *{margin:0;padding:0;box-sizing:border-box;}
-      body{font-family:'DM Sans',sans-serif;color:#1a1a2e;background:white;padding:20mm 18mm;}
+      html,body{width:210mm;}body{font-family:'DM Sans',sans-serif;color:#1a1a2e;background:white;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
       .devis-doc .doc-header{display:flex;justify-content:space-between;margin-bottom:28px;padding-bottom:16px;border-bottom:3px solid #1a1a2e;}
       .company-name{font-family:'Playfair Display',serif;font-size:20pt;color:#1a1a2e;margin-bottom:4px;}
       .company-info{font-size:9pt;color:#555;line-height:1.7;}
@@ -1259,11 +1260,11 @@ function printDevis() {
       .sig-box{flex:1;text-align:center;font-size:8.5pt;color:#555;}
       .sig-line{width:100%;height:55px;border-bottom:1px solid #aaa;margin-bottom:6px;}
       .footer-doc{margin-top:24px;padding-top:10px;border-top:1px solid #d8d0be;font-size:7.5pt;color:#888;text-align:center;}
-      @media print{body{padding:15mm 12mm;}@page{margin:0;size:A4;}}
+      @page{size:A4 portrait;margin:15mm 12mm;}@media print{html,body{width:auto;}table.lines tr,.party-box,.cond-box,.signature-section,.totals-section,.t-row,.t-grand{page-break-inside:avoid;break-inside:avoid;}table.lines thead{display:table-header-group;}}
     </style>
   </head><body>
     ${html}
-    <script>window.onload=()=>{window.print();window.close();}<\/script>
+    <script>window.onload=()=>{const go=()=>{window.print();window.close();};(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>setTimeout(go,300));}<\/script>
   </body></html>`);
   printWin.document.close();
   showToast('Impression lancée');
